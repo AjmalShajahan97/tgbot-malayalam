@@ -1,6 +1,6 @@
 
 {
-  "name": "tgbot",
+  "name": "tgbot-malayalam",
   "description": "Modular Telegram group management bot",
   "keywords": [
     "telegram",
@@ -9,7 +9,7 @@
     "manager",
     "3"
   ],
-  "repository": "https://github.com/AjmalShajahan97/tgbot",
+  "repository": "https://github.com/AjmalShajahan97/tgbot-malayalam",
   "env": {
     "ENV": {
       "description": "Setting this to ANYTHING will enable env variables",
