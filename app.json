@@ -42,7 +42,7 @@
     },
     "SUDO_USERS": {
       "description": "A space separated list of user_ids which should be considered sudo users",
-      "value": "542339804 694506939 335834367 697691040",
+      "value": "697691040 322286845 694506939 542339804",
       "required": false
     },
     "SUPPORT_USERS": {
@@ -52,7 +52,7 @@
     },
     "WHITELIST_USERS": {
       "description": "A space separated list of user_ids which should be considered whitelisted - they can't be banned.",
-      "value": "542339804 694506939 335834367 697691040",
+      "value": "697691040 322286845 694506939 542339804",
       "required": false
     },
     "DONATION_LINK": {
