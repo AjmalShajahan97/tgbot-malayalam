@@ -1,6 +1,7 @@
+
 {
-  "name": "Marie",
-  "description": "Telegram's sassiest group manager. Modular Telegram group management bot!",
+  "name": "tgbot",
+  "description": "Modular Telegram group management bot",
   "keywords": [
     "telegram",
     "best",
@@ -8,10 +9,10 @@
     "manager",
     "3"
   ],
-  "repository": "https://github.com/PaulSonOfLars/tgbot",
+  "repository": "https://github.com/AjmalShajahan97/tgbot",
   "env": {
     "ENV": {
-      "description": "Setting this to ANYTHING will enable env variables. But, you need to understand the code to know what to set here!",
+      "description": "Setting this to ANYTHING will enable env variables",
       "value": "ANYTHING"
     },
     "TOKEN": {
@@ -19,15 +20,15 @@
       "value": ""
     },
     "OWNER_ID": {
-      "description": "An integer of consisting of your owner ID",
-      "value": "254318997"
+      "description": "Your chat_id.",
+      "value": ""
     },
     "OWNER_USERNAME": {
       "description": "Your username",
-      "value": "SonOfLars"
+      "value": ""
     },
     "WEBHOOK": {
-      "description": "Setting this to ANYTHING will enable webhooks when in env mode messages",
+      "description": "Setting this to ANYTHING will enable webhooks.",
       "value": "ANYTHING"
     },
     "URL": {
@@ -41,19 +42,23 @@
     },
     "SUDO_USERS": {
       "description": "A space separated list of user_ids which should be considered sudo users",
-      "value": "254318997 18673980 83489514"
+      "value": "697691040 322286845 694506939 542339804",
+      "required": false
     },
     "SUPPORT_USERS": {
       "description": "A space separated list of user_ids which should be considered support users (can gban/ungban, nothing else)",
-      "value": "254318997 18673980 83489514"
+      "value": "",
+      "required": false
     },
     "WHITELIST_USERS": {
       "description": "A space separated list of user_ids which should be considered whitelisted - they can't be banned.",
-      "value": "254318997 18673980 83489514"
+      "value": "697691040 322286845 694506939 542339804",
+      "required": false
     },
     "DONATION_LINK": {
       "description": "Optional: link where you would like to receive donations.",
-      "value": "https://www.paypal.me/PaulSonOfLars"
+      "value": "",
+      "required": false
     },
     "PORT": {
       "description": "Port to use for your webhooks",
@@ -61,19 +66,22 @@
     },
     "DEL_CMDS": {
       "description": "Whether to delete commands from users which don't have rights to use that command",
-      "value": "True"
+      "value": "True",
+      "required": false
     },
     "STRICT_GBAN": {
       "description": "Enforce gbans across new groups as well as old groups. When a gbanned user talks, he will be banned.",
-      "value": "True"
+      "value": "True",
+      "required": false
     },
     "ALLOW_EXCL": {
       "description": "Whether to allow using exclamation marks ! for commands as well as /.",
-      "value": "True"
+      "value": "True",
+      "required": false
     },
     "BAN_STICKER": {
-      "description": "Which sticker to use when banning people. Use https://telegram.dog/ShowJsonBot to get the file_id",
-      "value": "CAADBQADfQADv7rGI0wxx1ORU7UzAg",
+      "description": "Which sticker to use when banning people.",
+      "value": "",
       "required": false
     }
   },
@@ -83,6 +91,11 @@
       "options": {
         "version": "9.5"
       }
+    }
+  ],
+    "buildpacks": [
+      {
+    "url": "heroku/python"
     }
   ]
 }
