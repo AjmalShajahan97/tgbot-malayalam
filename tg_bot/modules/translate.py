@@ -7,12 +7,12 @@ from telegram.ext import Filters, MessageHandler, run_async
 from tg_bot import dispatcher, LOGGER
 from tg_bot.modules.disable import DisableAbleCommandHandler
 
-from py_translator import Translator
+from googletrans import Translator
 
 
 @run_async
 def do_translate(bot: Bot, update: Update, args: List[str]):
-    short_name = "Created By @MidukkiBot 😬"
+    #short_name = "Created By @MidukkiBot 😬"
     msg = update.effective_message # type: Optional[Message]
     lan = " ".join(args)
     to_translate_text = msg.reply_to_message.text
@@ -26,8 +26,8 @@ def do_translate(bot: Bot, update: Update, args: List[str]):
         msg.reply_text(str(exc))
 
 
-__help__ = """- /trn - as reply to a long message
+__help__ = """- /tr - as reply to a long message
 """
 __mod_name__ = "Google Translate"
 
-dispatcher.add_handler(DisableAbleCommandHandler("trn", do_translate, pass_args=True))
+dispatcher.add_handler(DisableAbleCommandHandler("tr", do_translate, pass_args=True))
