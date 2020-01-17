@@ -148,11 +148,11 @@ def new_member(bot: Bot, update: Update):
                     "I have been added to {} with ID: <pre>{}</pre>".format(chat.title, chat.id),
                     parse_mode=ParseMode.HTML
                 )
-                bot.send_message(
-                    update.message.chat_id,
-                    "Please contact @SpEcHlDe if you want to add me to your group"
-                )
-                s_leave_group(bot, update, [str(update.message.chat_id)])
+                #bot.send_message(
+                #    update.message.chat_id,
+                #    "Please contact @SpEcHlDe if you want to add me to your group"
+                #)
+                #s_leave_group(bot, update, [str(update.message.chat_id)])
                 continue
 
             else:

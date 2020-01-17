@@ -149,7 +149,6 @@ def start(bot: Bot, update: Update, args: List[str]):
     else:
         update.effective_message.reply_text("പ്രസൻറ് സർ")
 
-
 # for test purposes
 def error_callback(bot, update, error):
     try:

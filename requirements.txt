@@ -16,6 +16,7 @@ telegram
 zalgo_text
 pynewtonmath
 bs4
+googletrans
 telegraph
 googletrans
 pillow
