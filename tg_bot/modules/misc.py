@@ -11,6 +11,7 @@ from telegram.ext import CommandHandler, run_async, Filters
 from telegram.utils.helpers import escape_markdown, mention_html
 
 from tg_bot import dispatcher, OWNER_ID, SUDO_USERS, SUPPORT_USERS, WHITELIST_USERS, BAN_STICKER
+from tg_bot.__main__ import GDPR
 from tg_bot.__main__ import STATS, USER_INFO
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.extraction import extract_user
@@ -292,7 +293,7 @@ def get_time(bot: Bot, update: Update, args: List[str]):
             elif country:
                 location = country
 
-            timenow = int(datetime.utcnow().strftime("%s"))
+            timenow = int(datetime.utcnow().timestamp())
             res = requests.get(GMAPS_TIME, params=dict(location="{},{}".format(lat, long), timestamp=timenow))
             if res.status_code == 200:
                 offset = json.loads(res.text)['dstOffset']
@@ -341,6 +342,22 @@ def reply_keyboard_remove(bot: Bot, update: Update):
     )
 
 
+@run_async
+def gdpr(bot: Bot, update: Update):
+    update.effective_message.reply_text("Deleting identifiable data...")
+    for mod in GDPR:
+        mod.__gdpr__(update.effective_user.id)
+
+    update.effective_message.reply_text("Your personal data has been deleted.\n\nNote that this will not unban "
+                                        "you from any chats, as that is telegram data, not Marie data. "
+                                        "Flooding, warns, and gbans are also preserved, as of "
+                                        "[this](https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/individual-rights/right-to-erasure/), "
+                                        "which clearly states that the right to erasure does not apply "
+                                        "\"for the performance of a task carried out in the public interest\", as is "
+                                        "the case for the aforementioned pieces of data.",
+                                        parse_mode=ParseMode.MARKDOWN)
+
+
 MARKDOWN_HELP = """
 Markdown is a very powerful formatting tool supported by telegram. {} has some enhancements, to make sure that \
 saved messages are correctly parsed, and to allow you to create buttons.
@@ -386,8 +403,8 @@ __help__ = """
  - /rmkeyboard: Helps you to remove Bot Keyboards from chats... Kanged from @MidukkiBot.
  - /runs: reply a random string from an array of replies.
  - /slap: slap a user, or get slapped if not a reply.
- - /time <place>: gives the local time at the given place.
  - /info: get information about a user.
+ - /gdpr: deletes your information from the bot's database. Private chats only.
 
  - /markdownhelp: quick summary of how markdown works in telegram - can only be called in private chats.
 """
@@ -409,6 +426,7 @@ ECHO_HANDLER = CommandHandler("echo", echo, filters=Filters.user(OWNER_ID))
 MD_HELP_HANDLER = CommandHandler("markdownhelp", markdown_help, filters=Filters.private)
 RMKEYBOARD_HANDLER = DisableAbleCommandHandler("rmkeyboard", reply_keyboard_remove)
 STATS_HANDLER = CommandHandler("stats", stats, filters=CustomFilters.sudo_filter)
+GDPR_HANDLER = CommandHandler("gdpr", gdpr, filters=Filters.private)
 
 dispatcher.add_handler(ID_HANDLER)
 dispatcher.add_handler(PING_HANDLER)
@@ -421,4 +439,4 @@ dispatcher.add_handler(INFO_HANDLER)
 dispatcher.add_handler(ECHO_HANDLER)
 dispatcher.add_handler(MD_HELP_HANDLER)
 dispatcher.add_handler(STATS_HANDLER)
-dispatcher.add_handler(RMKEYBOARD_HANDLER)
+dispatcher.add_handler(GDPR_HANDLER)
