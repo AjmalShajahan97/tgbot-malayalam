@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import base64
 
 import telegram.ext as tg
 
@@ -16,9 +17,16 @@ if sys.version_info[0] < 3 or sys.version_info[1] < 6:
     LOGGER.error("You MUST have a python version of at least 3.6! Multiple features depend on this. Bot quitting.")
     quit(1)
 
-ENV = bool(os.environ.get('ENV', False))
+ENV = os.environ.get('ENV', None)
 
-if ENV:
+if ENV is not None:
+    # kanged Developer verification from @deletescape
+    if ENV != base64.b64decode("UFNPTEdDV0lJRExPU1A=").decode("UTF-8"):
+        LOGGER.error("The README is there to be read. Extend this sample config to a config file, don't just rename and change "
+           "values here. Doing that WILL backfire on you.\nBot quitting.")
+        quit(1)
+    # kanged Developer verification from @deletescape
+
     TOKEN = os.environ.get('TOKEN', None)
     try:
         OWNER_ID = int(os.environ.get('OWNER_ID', None))

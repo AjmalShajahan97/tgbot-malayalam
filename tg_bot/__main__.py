@@ -48,8 +48,7 @@ And the following:
 DONATE_STRING = """Heya, glad to hear you want to donate!
 It took lots of work for my creator to get me to where I am now, and every donation helps \
 motivate him to make me even better. All the donation money will go to a better VPS to host me, and/or beer \
-(see his bio!). He's just a poor student, so every little helps!
-There are two ways of paying him; [PayPal](paypal.me/PaulSonOfLars), or [Monzo](monzo.me/paulnionvestergaardlarsen)."""
+(see his bio!). He's just a poor student, so every little helps!"""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -378,7 +377,7 @@ def donate(bot: Bot, update: Update):
     if chat.type == "private":
         update.effective_message.reply_text(DONATE_STRING, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
 
-        if OWNER_ID != 254318997 and DONATION_LINK:
+        if DONATION_LINK:
             update.effective_message.reply_text("You can also donate to the person currently running me "
                                                 "[here]({})".format(DONATION_LINK),
                                                 parse_mode=ParseMode.MARKDOWN)
@@ -473,11 +472,21 @@ def process_update(self, update):
         return
 
     now = datetime.datetime.utcnow()
-    cnt = CHATS_CNT.get(update.effective_chat.id, 0)
 
-    t = CHATS_TIME.get(update.effective_chat.id, datetime.datetime(1970, 1, 1))
+    # this is a "very" rare update
+    # aHR0cHM6Ly90Lm1lL1NwRWNIbERlLzM5Nw==
+    di = None
+    if update.effective_chat is not None:
+        di = update.effective_chat.id
+    else:
+        # temprary, for deebug purposes
+        self.logger.debug(update)
+
+    cnt = CHATS_CNT.get(di, 0)
+
+    t = CHATS_TIME.get(di, datetime.datetime(1970, 1, 1))
     if t and now > t + datetime.timedelta(0, 1):
-        CHATS_TIME[update.effective_chat.id] = now
+        CHATS_TIME[di] = now
         cnt = 0
     else:
         cnt += 1
@@ -485,7 +494,7 @@ def process_update(self, update):
     if cnt > 10:
         return
 
-    CHATS_CNT[update.effective_chat.id] = cnt
+    CHATS_CNT[di] = cnt
     for group in self.groups:
         try:
             for handler in (x for x in self.handlers[group] if x.check_update(update)):

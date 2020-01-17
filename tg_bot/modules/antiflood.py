@@ -11,6 +11,8 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin, user_admin, c
 from tg_bot.modules.log_channel import loggable
 from tg_bot.modules.sql import antiflood_sql as sql
 
+from tg_bot.modules.helper_funcs.string_handling import extract_time
+
 FLOOD_GROUP = 3
 
 
@@ -33,12 +35,14 @@ def check_flood(bot: Bot, update: Update) -> str:
     if not should_ban:
         return ""
 
+    mutetime = extract_time(None,  "30d")
+
     try:
         chat.kick_member(user.id)
         msg.reply_text("താൻ എന്തൊരു വെറുപ്പിക്കൽ ആണെടോ... ഇങ്ങനെ നിർത്താതെ മെസ്സേജ് അയച്ചാൽ മറ്റുള്ളവർക്ക് ശല്യം ആകില്ലേ.... തന്നെ ഇനി ഈ ഗ്രൂപ്പിന് ആവിശ്യം ഇല്ല ഇറങ്ങി പൊക്കോ....")
 
         return "<b>{}:</b>" \
-               "\n#BANNED" \
+               "\n#mutED" \
                "\n<b>User:</b> {}" \
                "\nFlooded the group.".format(html.escape(chat.title),
                                              mention_html(user.id, user.first_name))
@@ -48,7 +52,7 @@ def check_flood(bot: Bot, update: Update) -> str:
         sql.set_flood(chat.id, 0)
         return "<b>{}:</b>" \
                "\n#INFO" \
-               "\nDon't have kick permissions, so automatically disabled antiflood.".format(chat.title)
+               "\nDon't have mute permissions, so automatically disabled antiflood.".format(chat.title)
 
 
 @run_async

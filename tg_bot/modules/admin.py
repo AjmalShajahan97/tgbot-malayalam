@@ -193,8 +193,7 @@ def adminlist(bot: Bot, update: Update):
     text = "Admins in *{}*:".format(update.effective_chat.title or "this chat")
     for admin in administrators:
         user = admin.user
-        status = admin.status
-        name = "[{}](tg://user?id={})".format(user.first_name + " " + (user.last_name or ""), user.id)
+        name = "[{}](tg://user?id={})".format((user.first_name or "Deleted Account") + (user.last_name or ""), user.id)
         if user.username:
             name = "[{}](tg://user?id={})".format(user.first_name + (user.last_name or ""), user.id)
         if status == "creator":

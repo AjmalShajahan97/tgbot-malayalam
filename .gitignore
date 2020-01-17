@@ -5,3 +5,6 @@ tg_bot/config.py
 .pydevproject
 .directory
 .vscode
+/venv/
+*.jpg
+

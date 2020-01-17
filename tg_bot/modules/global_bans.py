@@ -124,7 +124,7 @@ def gban(bot: Bot, update: Update, args: List[str]):
                 pass
             else:
                 message.reply_text("Could not gban due to: {}".format(excp.message))
-                send_to_list(bot, SUDO_USERS + SUPPORT_USERS, "Could not gban due to: {}".format(excp.message))
+                send_to_list(bot,  SUDO_USERS + SUPPORT_USERS, "Could not gban due to: {}".format(excp.message))
                 sql.ungban_user(user_id)
                 return
         except TelegramError:
@@ -212,9 +212,11 @@ def gbanlist(bot: Bot, update: Update):
 
     banfile = 'Screw these guys.\n'
     for user in banned_users:
-        banfile += "[x] {} - {}\n".format(user["name"], user["user_id"])
+        banfile += "[x] {} - {} ".format(user["name"], user["user_id"])
         if user["reason"]:
             banfile += "Reason: {}\n".format(user["reason"])
+        else:
+            banfile += "\n"
 
     with BytesIO(str.encode(banfile)) as output:
         output.name = "gbanlist.txt"
