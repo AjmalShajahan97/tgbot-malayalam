@@ -28,8 +28,6 @@ def purge(bot: Bot, update: Update, args: List[str]) -> str:
                 # No point deleting messages which haven't been written yet.
                 if new_del < delete_to:
                     delete_to = new_del
-            else:
-                delete_to = msg.message_id - 1
             for m_id in range(delete_to, message_id - 1, -1):  # Reverse iteration over message ids
                 try:
                     bot.deleteMessage(chat.id, m_id)
