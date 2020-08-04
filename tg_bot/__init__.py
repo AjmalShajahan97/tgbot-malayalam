@@ -60,6 +60,11 @@ if ENV:
     ALLOW_EXCL = os.environ.get('ALLOW_EXCL', False)
     STRICT_GMUTE = bool(os.environ.get('STRICT_GMUTE', False))
 
+    try:
+        BMERNU_SCUT_SRELFTI = int(os.environ.get('BMERNU_SCUT_SRELFTI', None))
+    except ValueError:
+        BMERNU_SCUT_SRELFTI = None
+
 else:
     from tg_bot.config import Development as Config
     TOKEN = Config.API_KEY
@@ -101,7 +106,12 @@ else:
     BAN_STICKER = Config.BAN_STICKER
     ALLOW_EXCL = Config.ALLOW_EXCL
     STRICT_GMUTE = Config.STRICT_GMUTE
-   
+
+    try:
+        BMERNU_SCUT_SRELFTI = int(Config.BMERNU_SCUT_SRELFTI)
+    except (ValueError, TypeError):
+        BMERNU_SCUT_SRELFTI = None
+
 
 SUDO_USERS.add(OWNER_ID)
 
