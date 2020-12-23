@@ -10,7 +10,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, User
 from tg_bot import dispatcher, BAN_STICKER, LOGGER
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.chat_status import bot_admin, user_admin, is_user_ban_protected, can_restrict, \
-    is_user_admin, is_user_in_chat, is_bot_admin
+    is_user_admin, is_user_in_chat, _TELE_GRAM_ID_S
 from tg_bot.modules.helper_funcs.extraction import extract_user_and_text
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.log_channel import loggable
@@ -25,6 +25,14 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
+
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -53,7 +61,7 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
           "\n#BANNED" \
           "\n<b>• Admin:</b> {}" \
           "\n<b>• User:</b> {}" \
-          "\n<b>• ID:</b> <code>{}</code>".format(html.escape(chat.title), mention_html(user.id, user.first_name), 
+          "\n<b>• ID:</b> <code>{}</code>".format(html.escape(chat.title), mention_html(user.id, user.first_name),
                                                   mention_html(member.user.id, member.user.first_name), user_id)
 
     reply = "{} നെ ബാൻ ചെയ്തിട്ടുണ്ട്.." .format(mention_html(member.user.id, member.user.first_name))
@@ -93,6 +101,14 @@ def temp_ban(bot: Bot, update: Update, args: List[str]) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
+
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -140,7 +156,7 @@ def temp_ban(bot: Bot, update: Update, args: List[str]) -> str:
           "\n<b>• User:</b> {}" \
           "\n<b>• ID:</b> <code>{}</code>" \
           "\n<b>• Time:</b> {}".format(html.escape(chat.title), mention_html(user.id, user.first_name),
-                                                                mention_html(member.user.id, member.user.first_name), 
+                                                                mention_html(member.user.id, member.user.first_name),
                                                                              user_id, time_val)
     if reason:
         log += "\n<b>• Reason:</b> {}".format(reason)
@@ -174,6 +190,14 @@ def kick(bot: Bot, update: Update, args: List[str]) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
+
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -231,7 +255,7 @@ def banme(bot: Bot, update: Update):
         update.effective_message.reply_text("I wish I could... but you're an admin.")
         return
 
-    res = update.effective_chat.kick_member(user_id)  
+    res = update.effective_chat.kick_member(user_id)
     if res:
         update.effective_message.reply_text("No problem, banned.")
         log = "<b>{}:</b>" \
@@ -240,10 +264,10 @@ def banme(bot: Bot, update: Update):
               "\n<b>ID:</b> <code>{}</code>".format(html.escape(chat.title),
                                                     mention_html(user.id, user.first_name), user_id)
         return log
-    
+
     else:
         update.effective_message.reply_text("Huh? I can't :/")
-        
+
 @run_async
 @bot_admin
 @can_restrict
@@ -269,6 +293,14 @@ def unban(bot: Bot, update: Update, args: List[str]) -> str:
     message = update.effective_message  # type: Optional[Message]
     user = update.effective_user  # type: Optional[User]
     chat = update.effective_chat  # type: Optional[Chat]
+
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -316,7 +348,7 @@ def sban(bot: Bot, update: Update, args: List[str]) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
-    
+
     update.effective_message.delete()
 
     user_id, reason = extract_user_and_text(message, args)
@@ -342,7 +374,7 @@ def sban(bot: Bot, update: Update, args: List[str]) -> str:
           "\n#SILENT BAN" \
           "\n<b>• Admin:</b> {}" \
           "\n<b>• User:</b> {}" \
-          "\n<b>• ID:</b> <code>{}</code>".format(html.escape(chat.title), mention_html(user.id, user.first_name), 
+          "\n<b>• ID:</b> <code>{}</code>".format(html.escape(chat.title), mention_html(user.id, user.first_name),
                                                   mention_html(member.user.id, member.user.first_name), user_id)
     if reason:
         log += "\n<b>• Reason:</b> {}".format(reason)
@@ -356,13 +388,13 @@ def sban(bot: Bot, update: Update, args: List[str]) -> str:
             return log
         else:
             LOGGER.warning(update)
-            LOGGER.exception("ERROR banning user %s in chat %s (%s) due to %s", user_id, chat.title, chat.id, excp.message)       
+            LOGGER.exception("ERROR banning user %s in chat %s (%s) due to %s", user_id, chat.title, chat.id, excp.message)
     return ""
 
 __help__ = """
  - /kickme: ആജ്ഞ പുറപ്പെടുവിച്ച ഉപയോക്താവിനെ കുത്തിവയ്ക്കുക
 
-*Admin only:*
+*Admin [with can_restrict_members permission] only:*
  - /ban <userhandle>: ഒരു ഉപയോക്താവിനെ നിരോധിക്കുക. (via handle, or reply)
  - /tban <userhandle> x(m/h/d): x സമയം ഒരു ഉപയോക്താവിനെ നിരോധിക്കുക. (via handle, or reply). m = minutes, h = hours, d = days.
  - /unban <userhandle>: ഒരു ഉപയോക്താവിനെ ഒഴിവാക്കി. (via handle, or reply)
